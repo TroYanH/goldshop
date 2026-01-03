@@ -286,6 +286,8 @@
 const TOKEN = "8262381911:AAEmAdUWUercaqOorllEn802oxYOo4kIzlk";
 const CHAT_ID = "1290447494";
 
+let isWaiting = false;
+
 const langData = {
     'ru': {
         'h_title': 'Честная Скупка Золота',
@@ -305,7 +307,7 @@ const langData = {
         'h_title': 'Чесна Скупка Золота',
         'h_sub': 'Виплачуємо до 95% від ціни біржі. Гроші одразу.',
         'c1_t': 'Золото 585°', 'c2_t': 'Золото 750°', 'c3_t': 'Золото 999°',
-        'btn_sell': 'ПРОДАТИ', 'eval_t': 'Оцінка по фото за 5 хвилин',
+        'btn_sell': 'ПРОДАТЬ', 'eval_t': 'Оцінка по фото за 5 хвилин',
         'q1': 'Потрібен паспорт?', 'a1': 'Ні, документи не потрібні.',
         'q2': 'Як платять?', 'a2': 'Готівка або карта миттєво.',
         'm_title': 'Залишити заявку', 'm_send': 'ПЕРЕДЗВОНІТЬ МЕНІ',
@@ -331,17 +333,46 @@ document.getElementById('tgForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
     const status = document.getElementById('formStatus');
+
+    // --- БЛОК ЗАЩИТЫ ---
+    const lastSend = localStorage.getItem('last_send_time');
+    const now = Date.now();
+    const cooldown = 60000;
+
+    if (isWaiting || (lastSend && (now - lastSend < cooldown))) {
+        const timeLeft = Math.ceil((cooldown - (now - lastSend)) / 1000);
+        alert(`Пожалуйста, подождите ${timeLeft > 0 ? timeLeft : 5} сек. перед новой заявкой.`);
+        return;
+    }
+
     const message = `<b>🚀 ELITE GOLD: Новая заявка!</b>\n<b>Имя:</b> ${document.getElementById('userName').value}\n<b>Тел:</b> ${document.getElementById('userPhone').value}`;
 
+    isWaiting = true;
     btn.disabled = true;
+    const originalText = btn.innerText;
+    btn.innerText = "ОЖИДАЙТЕ...";
+
     fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ chat_id: CHAT_ID, parse_mode: 'html', text: message })
-    }).then(() => {
-        status.style.display = 'block'; status.style.color = '#25d366'; status.innerText = "Успешно!"; this.reset();
-        setTimeout(closeModal, 1500);
-    }).finally(() => { btn.disabled = false; });
+    }).then((res) => {
+        if (res.ok) {
+            status.style.display = 'block'; 
+            status.style.color = '#25d366'; 
+            status.innerText = "Успешно!"; 
+            localStorage.setItem('last_send_time', Date.now()); 
+            this.reset();
+            setTimeout(closeModal, 1500);
+        }
+    }).finally(() => { 
+        setTimeout(() => {
+            isWaiting = false;
+            btn.disabled = false;
+            btn.innerText = originalText;
+            if (status) status.style.display = 'none';
+        }, cooldown);
+    });
 });
 
 function openModal() { document.getElementById('modal').style.setProperty('display', 'block', 'important'); document.body.style.overflow = 'hidden'; }
@@ -358,6 +389,7 @@ window.onload = () => setLang(localStorage.getItem('lang') || 'ru');
 </body>
 
 </html>
+
 
 
 
