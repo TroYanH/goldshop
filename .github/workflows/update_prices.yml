@@ -12,7 +12,7 @@ jobs:
 
       - name: Write new prices to JSON
         run: |
-          '${{ github.event.client_payload.prices }}' > prices.json
+          echo '${{ github.event.client_payload.prices }}' > prices.json
 
       - name: Commit and Push
         run: |
