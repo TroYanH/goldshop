@@ -315,21 +315,25 @@ async function loadLivePrices() {
         const prices = await response.json();
         
         const priceMap = {
-            'price-375': prices.p375,
             'price-585': prices.p585,
             'price-750': prices.p750,
-            'price-999': prices.p999
+            'price-999': prices.p999,
+            
+            'm-price-375': prices.p375,
+            'm-price-585': prices.p585,
+            'm-price-750': prices.p750,
+            'm-price-999': prices.p999
         };
 
         for (const [id, value] of Object.entries(priceMap)) {
             const el = document.getElementById(id);
-            if (el) {
+            if (el && value) {
                 el.innerText = value;
             }
         }
-        console.log("Цены успешно обновлены из JSON");
+        console.log("Цены обновлены везде: и на главной, и в модалке");
     } catch (err) {
-        console.error("Ошибка подгрузки цен:", err);
+        console.error("Ошибка:", err);
     }
 }
 
@@ -459,16 +463,16 @@ window.onload = () => {
         <h2 class="lang" data-key="price_modal_title" style="color: #d4af37; text-align: center; margin-bottom: 25px;">Актуальные цены</h2>
         <div style="display: flex; flex-direction: column; gap: 15px;">
             <div style="display: flex; justify-content: space-between; border-bottom: 1px dotted #444; padding-bottom: 10px;">
-                <span>Золото 375°</span> <strong style="color: #d4af37;"><span id="price-375">2000</span>+ грн</strong>
+                <span>Золото 375°</span> <strong style="color: #d4af37;"><span id="m-price-375">2000</span>+ грн</strong>
             </div>
             <div style="display: flex; justify-content: space-between; border-bottom: 1px dotted #444; padding-bottom: 10px;">
-                <span>Золото 585°</span> <strong style="color: #d4af37;"><span id="price-585">3200</span>+ грн</strong>
+                <span>Золото 585°</span> <strong style="color: #d4af37;"><span id="m-price-585">3200</span>+ грн</strong>
             </div>
             <div style="display: flex; justify-content: space-between; border-bottom: 1px dotted #444; padding-bottom: 10px;">
-                <span>Золото 750°</span> <strong style="color: #d4af37;"><span id="price-750">4100</span>+ грн</strong>
+                <span>Золото 750°</span> <strong style="color: #d4af37;"><span id="m-price-750">4100</span>+ грн</strong>
             </div>
             <div style="display: flex; justify-content: space-between; border-bottom: 1px dotted #444; padding-bottom: 10px;">
-                <span>Золото 999°</span> <strong style="color: #d4af37;"><span id="price-999">5700</span>+ грн</strong>
+                <span>Золото 999°</span> <strong style="color: #d4af37;"><span id="m-price-999">5700</span>+ грн</strong>
             </div>
         </div>
     </div>
@@ -481,6 +485,7 @@ window.onload = () => {
 </body>
 
 </html>
+
 
 
 
