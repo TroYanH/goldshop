@@ -198,21 +198,23 @@
         <div class="card">
             <i class="fas fa-gem"></i>
             <h3 class="lang" data-key="c1_t">Золото 585°</h3>
-            <div class="price-tag">3200 грн/г</div>
+            <div class="price-tag"><span id="price-585">3200</span> грн/г</div>
             <button class="btn-sell lang" data-key="btn_sell" onclick="openModal()">ПРОДАТЬ</button>
         </div>
+        
         <div class="card">
             <i class="fas fa-coins"></i>
             <h3 class="lang" data-key="c2_t">Золото 750°</h3>
-            <div class="price-tag">4100 грн/г</div>
+            <div class="price-tag"><span id="price-750">4100</span> грн/г</div>
             <button class="btn-sell lang" data-key="btn_sell" onclick="openModal()">ПРОДАТЬ</button>
         </div>
+        
         <div class="card">
             <i class="fas fa-vault"></i>
             <h3 class="lang" data-key="c3_t">Золото 999°</h3>
-            <div class="price-tag">5700 грн/г</div>
+            <div class="price-tag"><span id="price-999">5700</span> грн/г</div>
             <button class="btn-sell lang" data-key="btn_sell" onclick="openModal()">ПРОДАТЬ</button>
-        </div>
+</div>
     </div>
 
     <p class="lang" data-key="disclaimer" style="font-size: 11px; color: #555; text-align: center; margin-top: 15px; max-width: 800px; margin-left: auto; margin-right: auto;">
@@ -305,6 +307,32 @@ const CHAT_IDS = ["1290447494", "6081270268"];
 
 let isWaiting = false;
 
+async function loadLivePrices() {
+    try {
+        const response = await fetch('prices.json?v=' + Date.now());
+        if (!response.ok) return;
+        
+        const prices = await response.json();
+        
+        const priceMap = {
+            'price-375': prices.p375,
+            'price-585': prices.p585,
+            'price-750': prices.p750,
+            'price-999': prices.p999
+        };
+
+        for (const [id, value] of Object.entries(priceMap)) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.innerText = value + "+ грн";
+            }
+        }
+        console.log("Цены успешно обновлены из JSON");
+    } catch (err) {
+        console.error("Ошибка подгрузки цен:", err);
+    }
+}
+
 const langData = {
     'ru': {
         'h_title': 'Честная Скупка Золота',
@@ -374,7 +402,6 @@ document.getElementById('tgForm').addEventListener('submit', function(e) {
     const originalText = btn.innerText;
     btn.innerText = "ОЖИДАЙТЕ...";
 
-    // Отправка сразу на несколько ID
     const requests = CHAT_IDS.map(id => 
         fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
             method: 'POST',
@@ -402,7 +429,6 @@ document.getElementById('tgForm').addEventListener('submit', function(e) {
     });
 });
 
-// Управление всеми модальными окнами
 function openModal() { document.getElementById('modal').style.setProperty('display', 'block', 'important'); document.body.style.overflow = 'hidden'; }
 function closeModal() { document.getElementById('modal').style.setProperty('display', 'none', 'important'); document.body.style.overflow = 'auto'; }
 
@@ -412,7 +438,6 @@ function closePrivacy() { document.getElementById('privacyModal').style.setPrope
 function openPriceModal() { document.getElementById('priceModal').style.display = 'block'; document.body.style.overflow = 'hidden'; }
 function closePriceModal() { document.getElementById('priceModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
-// Единый обработчик для закрытия при клике на фон
 window.onclick = function(event) {
     const pModal = document.getElementById('priceModal');
     const mModal = document.getElementById('modal');
@@ -423,26 +448,31 @@ window.onclick = function(event) {
     if (event.target == prModal) closePrivacy();
 };
 
-window.onload = () => setLang(localStorage.getItem('lang') || 'ru');
+window.onload = () => {
+    setLang(localStorage.getItem('lang') || 'ru');
+    loadLivePrices();
+};
 </script>
-    <div id="priceModal" class="modal-overlay" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);">
+<div id="priceModal" class="modal-overlay" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);">
     <div style="background: #1a1a1a; margin: 10% auto; padding: 30px; border: 1px solid #d4af37; width: 90%; max-width: 400px; border-radius: 15px; position: relative; color: white;">
         <span onclick="closePriceModal()" style="position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; color: #d4af37;">&times;</span>
         <h2 class="lang" data-key="price_modal_title" style="color: #d4af37; text-align: center; margin-bottom: 25px;">Актуальные цены</h2>
         <div style="display: flex; flex-direction: column; gap: 15px;">
             <div style="display: flex; justify-content: space-between; border-bottom: 1px dotted #444; padding-bottom: 10px;">
-                <span>Золото 375°</span> <strong style="color: #d4af37;">2000+ грн</strong>
+                <span>Золото 375°</span> <strong style="color: #d4af37;"><span id="price-375">2000</span>+ грн</strong>
             </div>
             <div style="display: flex; justify-content: space-between; border-bottom: 1px dotted #444; padding-bottom: 10px;">
-                <span>Золото 585°</span> <strong style="color: #d4af37;">3200+ грн</strong>
+                <span>Золото 585°</span> <strong style="color: #d4af37;"><span id="price-585">3200</span>+ грн</strong>
             </div>
             <div style="display: flex; justify-content: space-between; border-bottom: 1px dotted #444; padding-bottom: 10px;">
-                <span>Золото 750°</span> <strong style="color: #d4af37;">4100+ грн</strong>
+                <span>Золото 750°</span> <strong style="color: #d4af37;"><span id="price-750">4100</span>+ грн</strong>
             </div>
             <div style="display: flex; justify-content: space-between; border-bottom: 1px dotted #444; padding-bottom: 10px;">
-                <span>Золото 999°</span> <strong style="color: #d4af37;">5700+ грн</strong>
+                <span>Золото 999°</span> <strong style="color: #d4af37;"><span id="price-999">5700</span>+ грн</strong>
             </div>
         </div>
+    </div>
+</div>
         <p style="font-size: 11px; color: #888; margin-top: 25px; text-align: center;" class="lang" data-key="disclaimer">
             * Цены зависят от курса и объема.
         </p>
@@ -451,6 +481,7 @@ window.onload = () => setLang(localStorage.getItem('lang') || 'ru');
 </body>
 
 </html>
+
 
 
 
