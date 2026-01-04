@@ -59,7 +59,7 @@ header {
 .hero h1 { font-size: 3rem; margin: 0; text-transform: uppercase; }
 .hero p { font-size: 1.1rem; color: #ccc; margin-top: 10px; }
 
-/* ОСНОВНОЙ КОНТЕЙНЕР */
+/* КОНТЕЙНЕР ДЛЯ ВСЕГО КОНТЕНТА */
 .container { 
     max-width: 1100px; 
     margin: -40px auto 60px; 
@@ -72,7 +72,7 @@ header {
     display: grid; 
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
     gap: 20px; 
-    align-items: start; /* Не дает карточкам растягиваться во всю высоту ряда */
+    align-items: start; 
 }
 
 .card {
@@ -87,34 +87,18 @@ header {
     flex-direction: column;
     justify-content: space-between;
     min-height: 350px;
-    box-sizing: border-box;
 }
 
 .card i { color: var(--accent-gold); font-size: 40px; margin-bottom: 15px; }
-
-.price-tag { 
-    font-size: 32px; 
-    font-weight: 900; 
-    margin: 15px 0;
-}
+.price-tag { font-size: 32px; font-weight: 900; margin: 15px 0; }
 
 .btn-sell {
-    background: var(--gold-gradient); 
-    border: none; 
-    padding: 15px;
-    border-radius: 8px; 
-    font-weight: bold; 
-    cursor: pointer;
-    width: 100%; 
-    color: #000; 
-    text-transform: uppercase;
-    transition: all 0.3s ease; 
-    position: relative;
-    overflow: hidden;
+    background: var(--gold-gradient); border: none; padding: 15px;
+    border-radius: 8px; font-weight: bold; cursor: pointer;
+    width: 100%; color: #000; text-transform: uppercase;
+    transition: all 0.3s ease; position: relative; overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
-
-/* ЭФФЕКТ БЛИКА НА КНОПКЕ */
 .btn-sell::after {
     content: ''; position: absolute; top: -50%; left: -60%; width: 20%; height: 200%;
     background: rgba(255, 255, 255, 0.4); transform: rotate(30deg); transition: all 0.5s;
@@ -122,102 +106,80 @@ header {
 .btn-sell:hover::after { left: 120%; }
 .btn-sell:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4); }
 
-/* БЛОК ВОПРОСОВ (FAQ) */
+/* ФИКС: СЕТКА ВОПРОСОВ (FAQ) */
 .faq-grid { 
     display: grid; 
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
     gap: 30px; 
-    margin-top: 40px; 
-    align-items: start; /* ФИКС: Чтобы вопросы не тянулись */
+    margin: 40px 0; 
+    align-items: start; /* Чтоб блоки не тянулись */
 }
 
 .faq-item { 
     border-left: 3px solid var(--accent-gold); 
     padding: 10px 0 10px 20px; 
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 0 10px 10px 0;
 }
 .faq-item h4 { margin: 0 0 10px 0; font-size: 1.2rem; color: var(--accent-gold); }
 .faq-item p { margin: 0; color: #ccc; line-height: 1.5; }
 
-/* ОЦЕНКА ПО ФОТО */
-.eval-box { background: var(--gold-gradient); padding: 2px; border-radius: 20px; margin: 60px 0; }
+/* ФИКС: ОЦЕНКА ПО ФОТО */
+.eval-box { 
+    max-width: 1100px; /* Ограничиваем, чтоб не на весь экран */
+    margin: 60px auto; 
+    background: var(--gold-gradient); 
+    padding: 2px; 
+    border-radius: 20px; 
+}
 .eval-inner { background: #111; padding: 40px; border-radius: 18px; text-align: center; }
 
-/* КАРТА: теперь не "на все ебало" */
+/* ФИКС: КАРТА */
 .map-container { 
     margin: 60px auto 0; 
     height: 400px; 
-    max-width: 1100px; /* ФИКС: Ограничение ширины */
+    max-width: 1100px; /* Центрируем и ограничиваем */
     border-radius: 20px; 
     overflow: hidden; 
     border: 1px solid #333; 
     filter: grayscale(1) invert(0.9); 
 }
 
-/* МОДАЛЬНЫЕ ОКНА */
+/* МОДАЛКИ */
 .modal-overlay { 
-    display: none; 
-    position: fixed; 
-    top: 0; left: 0; 
-    width: 100%; height: 100%; 
-    background: rgba(0, 0, 0, 0.85); 
-    backdrop-filter: blur(8px);
-    z-index: 10000; 
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 10000; 
 }
-
 .modal-content { 
-    position: fixed;
-    top: 50%; left: 50%; 
-    transform: translate(-50%, -50%); 
-    background: #1a1a1a; 
-    padding: 35px 25px; 
-    border-radius: 20px; 
-    border: 1px solid var(--accent-gold); 
-    width: 90%; max-width: 380px; 
-    box-sizing: border-box;
-    z-index: 10001;
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+    background: #1a1a1a; padding: 35px 25px; border-radius: 20px; 
+    border: 1px solid var(--accent-gold); width: 90%; max-width: 380px; box-sizing: border-box; z-index: 10001;
 }
-
 .modal-content input { 
-    width: 100%; padding: 15px; margin: 10px 0; 
-    background: #222; border: 1px solid #444; color: #fff; 
-    border-radius: 8px; box-sizing: border-box;
+    width: 100%; padding: 15px; margin: 10px 0; background: #222; 
+    border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box;
 }
 
-/* КНОПКИ СВЯЗИ: фиксируем размер */
+/* ФИКС: КНОПКИ СВЯЗИ */
 .contact-bar { 
-    position: fixed; 
-    bottom: 20px; 
-    right: 20px; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 12px; 
-    z-index: 999; 
-    width: 60px; /* ФИКС: Запрещаем растягиваться контейнеру */
+    position: fixed; bottom: 20px; right: 20px; 
+    display: flex; flex-direction: column; gap: 12px; z-index: 999; 
+    width: auto; /* Запрещаем растягиваться */
 }
-
 .social-btn { 
-    width: 55px; 
-    height: 55px; 
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    color: white; 
-    font-size: 24px; 
-    text-decoration: none; 
+    width: 55px; height: 55px; border-radius: 50%; 
+    display: flex; align-items: center; justify-content: center; 
+    color: white; font-size: 24px; text-decoration: none; 
     box-shadow: 0 5px 15px rgba(0,0,0,0.5); 
 }
-.tg { background: #0088cc; } 
-.vb { background: #7360f2; } 
+.tg { background: #0088cc; } .vb { background: #7360f2; } 
 .ph { background: var(--gold-gradient); color: #000; }
 
-footer { text-align: center; padding: 60px 20px; border-top: 1px solid #222; color: #777; font-size: 14px; line-height: 1.6; }
+footer { text-align: center; padding: 60px 20px; border-top: 1px solid #222; color: #777; font-size: 14px; }
 
 @media (max-width: 768px) {
     .hero h1 { font-size: 1.8rem; }
-    .grid { grid-template-columns: 1fr; }
-    .logo { font-size: 18px; }
-    .nav-phone { font-size: 14px; }
+    .grid, .faq-grid { grid-template-columns: 1fr; }
     .card { min-height: 320px; }
     .map-container { height: 300px; margin: 40px 10px; }
 }
@@ -538,6 +500,7 @@ window.onload = () => {
 </body>
 
 </html>
+
 
 
 
