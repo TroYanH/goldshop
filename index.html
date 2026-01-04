@@ -208,6 +208,16 @@
         .logo { font-size: 15px; }
         .nav-phone { font-size: 13px; }
     }
+        
+    #priceModal > div {
+        margin: 0 auto !important; /* Убираем авто-отступ, который косит вправо */
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important; /* Жестко ставим по центру экрана */
+        width: 92% !important; /* Чуть сужаем, чтобы точно влезло */
+        box-sizing: border-box !important; /* Считаем padding внутрь ширины, а не наружу */
+    }
     </style>
 </head>
 <body>
@@ -529,6 +539,7 @@ window.onload = () => {
 </body>
 
 </html>
+
 
 
 
