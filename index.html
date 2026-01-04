@@ -141,7 +141,6 @@ header {
     filter: grayscale(1) invert(0.9); 
 }
 
-/* ФИКС ФУТЕРА: УБРАЛИ FLEX, СДЕЛАЛИ ПЛОТНО */
 footer { 
     text-align: center; 
     padding: 30px 20px; 
@@ -152,11 +151,24 @@ footer {
     display: block !important;
 }
 
-/* СТРОЧКИ ТЕКСТА В ФУТЕРЕ: БЕЗ ДЫРОК */
 footer p, footer span, footer div {
     margin: 4px 0 !important;
     padding: 0 !important;
     line-height: 1.2;
+}
+
+footer a {
+    color: var(--accent-gold);
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+    display: inline-block;
+    margin-top: 10px !important; 
+}
+
+footer a:hover {
+    text-decoration: underline;
+    opacity: 0.8;
 }
 
 .modal-overlay { 
@@ -510,6 +522,7 @@ window.onload = () => {
 </body>
 
 </html>
+
 
 
 
