@@ -135,25 +135,33 @@ header {
     filter: grayscale(1) invert(0.9); 
 }
 
-/* --- ФИКС МОДАЛКИ (ЖЕСТКИЙ) --- */
+/* --- УНИВЕРСАЛЬНЫЙ ФИКС ВСЕХ МОДАЛОК (ЦЕНЫ И ПРОДАЖА) --- */
 .modal-overlay { 
     display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 10000; 
+    background: rgba(0, 0, 0, 0.85) !important; backdrop-filter: blur(8px); z-index: 10000; 
 }
 
-/* Нацеливаемся на контент модалки, игнорируя инлайновые косяки */
-#priceModal > div, .modal-content { 
+/* Центрируем любое окно по классу или ID */
+.modal-content, 
+#priceModal > div, 
+#modal > div, 
+[id*="Modal"] > div:not(.modal-overlay) { 
+    position: fixed !important; 
+    top: 50% !important; 
+    left: 50% !important; 
+    transform: translate(-50%, -50%) !important; 
+    background: #1a1a1a !important; 
     width: 95% !important; 
-    max-width: 380px !important; 
-    padding: 20px 15px !important; /* Уменьшаем внутренние дыры */
+    max-width: 400px !important; 
+    padding: 25px 15px !important; 
+    border-radius: 20px !important; 
+    border: 1px solid var(--accent-gold) !important; 
     box-sizing: border-box !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
+    z-index: 10001 !important;
     margin: 0 !important;
 }
 
-/* Сжимаем строки с ценами, чтобы не распирали окно */
+/* Сжимаем строки с ценами внутри модалки */
 #priceModal div[style*="flex"] { 
     gap: 8px !important; 
     width: 100% !important;
@@ -538,6 +546,7 @@ window.onload = () => {
 </body>
 
 </html>
+
 
 
 
