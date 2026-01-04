@@ -169,8 +169,18 @@
 <body>
 
 <header>
-    <div class="logo">ELITE GOLD</div>
+    <div class="logo">
+        <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+            <img src="logo.png" alt="Logo" style="height: 40px; width: auto;">
+            <span style="color: #d4af37; font-weight: bold;">ELITE GOLD</span>
+        </a>
+    </div>
+    
     <div style="display: flex; align-items: center; gap: 15px;">
+        <button onclick="openPriceModal()" style="background: #d4af37; border: none; color: #000; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+            <i class="fas fa-list-ul"></i> ЦЕНЫ
+        </button>
+
         <div class="lang-switcher">
             <span id="btn-ru" class="lang-btn active" onclick="setLang('ru')">RU</span> | 
             <span id="btn-ua" class="lang-btn" onclick="setLang('ua')">UA</span>
@@ -189,19 +199,19 @@
         <div class="card">
             <i class="fas fa-gem"></i>
             <h3 class="lang" data-key="c1_t">Золото 585°</h3>
-            <div class="price-tag">3650 грн/г</div>
+            <div class="price-tag">3200 грн/г</div>
             <button class="btn-sell lang" data-key="btn_sell" onclick="openModal()">ПРОДАТЬ</button>
         </div>
         <div class="card">
             <i class="fas fa-coins"></i>
             <h3 class="lang" data-key="c2_t">Золото 750°</h3>
-            <div class="price-tag">4680 грн/г</div>
+            <div class="price-tag">4100 грн/г</div>
             <button class="btn-sell lang" data-key="btn_sell" onclick="openModal()">ПРОДАТЬ</button>
         </div>
         <div class="card">
             <i class="fas fa-vault"></i>
             <h3 class="lang" data-key="c3_t">Золото 999°</h3>
-            <div class="price-tag">6350 грн/г</div>
+            <div class="price-tag">5700 грн/г</div>
             <button class="btn-sell lang" data-key="btn_sell" onclick="openModal()">ПРОДАТЬ</button>
         </div>
     </div>
@@ -390,10 +400,29 @@ window.onclick = function(event) {
 }
 
 window.onload = () => setLang(localStorage.getItem('lang') || 'ru');
+
+function openPriceModal() {
+    document.getElementById('priceModal').style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Запрещаем скролл сайта под окном
+}
+
+function closePriceModal() {
+    document.getElementById('priceModal').style.display = 'none';
+    document.body.style.overflow = 'auto'; // Возвращаем скролл
+}
+
+// Чтобы закрывалось при клике мимо окна
+window.onclick = function(event) {
+    let modal = document.getElementById('priceModal');
+    if (event.target == modal) {
+        closePriceModal();
+    }
+}
 </script>
 </body>
 
 </html>
+
 
 
 
