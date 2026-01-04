@@ -157,18 +157,19 @@ footer p, footer span, footer div {
     line-height: 1.2;
 }
 
-footer a {
-    color: var(--accent-gold);
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.3s;
-    display: inline-block;
-    margin-top: 10px !important; 
+footer a, footer .policy-link {
+    color: var(--accent-gold) !important; /
+    text-decoration: underline !important; /
+    font-weight: bold !important;
+    display: inline-block !important;
+    margin-top: 12px !important; /
+    transition: 0.3s ease;
+    cursor: pointer !important;
 }
 
 footer a:hover {
-    text-decoration: underline;
-    opacity: 0.8;
+    color: #fff !important; 
+    text-decoration: none !important;
 }
 
 .modal-overlay { 
@@ -522,6 +523,7 @@ window.onload = () => {
 </body>
 
 </html>
+
 
 
 
