@@ -1,0 +1,23 @@
+name: Update Prices from Telegram
+on:
+  repository_dispatch:
+    types: [update_price]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Write new prices to JSON
+        run: |
+          '${{ github.event.client_payload.prices }}' > prices.json
+
+      - name: Commit and Push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add prices.json
+          git commit -m "Цены обновлены через Telegram бота"
+          git push
