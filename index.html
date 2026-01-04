@@ -170,11 +170,22 @@ header {
 .tg { background: #0088cc; } .vb { background: #7360f2; } 
 .ph { background: var(--gold-gradient); color: #000; }
 
-footer { text-align: center; padding: 60px 20px; border-top: 1px solid #222; color: #777; font-size: 14px; }
+footer { 
+    text-align: center; 
+    padding: 80px 20px; 
+    margin-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.1); 
+    color: #777; 
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; 
+}
 
 @media (max-width: 768px) {
     .hero h1 { font-size: 1.8rem; }
-    .grid, .faq-grid { grid-template-columns: 1fr; } /* На мобилках в один столбец */
+    .grid, .faq-grid { grid-template-columns: 1fr; }
     .card { min-height: 320px; }
     .map-container { height: 300px; margin: 40px 10px; }
 }
@@ -495,6 +506,7 @@ window.onload = () => {
 </body>
 
 </html>
+
 
 
 
