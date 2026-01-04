@@ -301,7 +301,7 @@
 
 <script>
 const TOKEN = "8262381911:AAEmAdUWUercaqOorllEn802oxYOo4kIzlk";
-const CHAT_ID = "1290447494";
+const CHAT_IDS = ["1290447494", "6081270268"];
 
 let isWaiting = false;
 
@@ -313,6 +313,7 @@ const langData = {
         'btn_sell': 'ПРОДАТЬ', 'eval_t': 'Оценка по фото за 5 минут',
         'q1': 'Нужен паспорт?', 'a1': 'Нет, документы не нужны.',
         'q2': 'Как платят?', 'a2': 'Наличные или карта мгновенно.',
+        'q3': 'Работаете на выезд?', 'a3': 'Да, наш оценщик может приехать к вам в любую точку Киева.',
         'm_title': 'Оставить заявку', 'm_send': 'ПЕРЕЗВОНИТЕ МНЕ',
         'address': 'г. Киев, ул. Кловский спуск, 10',
         'work_time': 'Пн-Сб 09:00 — 20:00, Вс — выходной',
@@ -320,17 +321,16 @@ const langData = {
         'privacy_btn': 'Политика конфиденциальности / Політика конфіденційності',
         'disclaimer': '* Указанные цены являются ориентировочными и зависят от состояния изделия, объема партии и актуальных котировок биржи на момент совершения сделки.',
         'privacy_consent': 'Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.',
-        'price_modal_title': 'Актуальные цены',
-        'q3': 'Работаете на выезд?', 
-        'a3': 'Да, наш оценщик может приехать к вам в любую точку Киева.'
+        'price_modal_title': 'Актуальные цены'
     },
     'ua': {
         'h_title': 'Чесна Скупка Золота',
         'h_sub': 'Виплачуємо до 95% від ціни біржі. Гроші одразу.',
         'c1_t': 'Золото 585°', 'c2_t': 'Золото 750°', 'c3_t': 'Золото 999°',
-        'btn_sell': 'ПРОДАТИ', 'eval_t': 'Оцінка по фото за 5 хвилин',
+        'btn_sell': 'ПРОДАТІ', 'eval_t': 'Оцінка по фото за 5 хвилин',
         'q1': 'Потрібен паспорт?', 'a1': 'Ні, документи не потрібні.',
         'q2': 'Як платять?', 'a2': 'Готівка або карта миттєво.',
+        'q3': 'Працюєте на виїзд?', 'a3': 'Так, наш оцінювач може приїхати до вас у будь-яку точку Києва.',
         'm_title': 'Залишити заявку', 'm_send': 'ПЕРЕДЗВОНІТЬ МЕНІ',
         'address': 'м. Київ, вул. Кловський узвіз, 10',
         'work_time': 'Пн-Сб 09:00 — 20:00, Нд — вихідний',
@@ -338,9 +338,7 @@ const langData = {
         'privacy_btn': 'Політика конфіденційності / Політика конфіденційності',
         'disclaimer': '* Вказані ціни є орієнтовними та залежать від стану виробу, обсягу партії та актуальних котирувань біржі на момент здійснення угоди.',
         'privacy_consent': 'Натискаючи кнопку, ви погоджуєтесь з обробкою персональних даних.',
-        'price_modal_title': 'Актуальні ціни',
-        'q3': 'Працюєте на виїзд?', 
-        'a3': 'Так, наш оцінювач може приїхати до вас у будь-яку точку Києва.',
+        'price_modal_title': 'Актуальні ціни'
     }
 };
 
@@ -376,15 +374,20 @@ document.getElementById('tgForm').addEventListener('submit', function(e) {
     const originalText = btn.innerText;
     btn.innerText = "ОЖИДАЙТЕ...";
 
-    fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: CHAT_ID, parse_mode: 'html', text: message })
-    }).then((res) => {
-        if (res.ok) {
+    // Отправка сразу на несколько ID
+    const requests = CHAT_IDS.map(id => 
+        fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: id, parse_mode: 'html', text: message })
+        })
+    );
+
+    Promise.all(requests).then((responses) => {
+        if (responses.every(res => res.ok)) {
             status.style.display = 'block'; 
             status.style.color = '#25d366'; 
-            status.innerText = "Успешно!"; 
+            status.innerText = "Успешно отправлено всем!"; 
             localStorage.setItem('last_send_time', Date.now()); 
             this.reset();
             setTimeout(closeModal, 1500);
@@ -399,6 +402,7 @@ document.getElementById('tgForm').addEventListener('submit', function(e) {
     });
 });
 
+// Управление всеми модальными окнами
 function openModal() { document.getElementById('modal').style.setProperty('display', 'block', 'important'); document.body.style.overflow = 'hidden'; }
 function closeModal() { document.getElementById('modal').style.setProperty('display', 'none', 'important'); document.body.style.overflow = 'auto'; }
 
@@ -408,6 +412,7 @@ function closePrivacy() { document.getElementById('privacyModal').style.setPrope
 function openPriceModal() { document.getElementById('priceModal').style.display = 'block'; document.body.style.overflow = 'hidden'; }
 function closePriceModal() { document.getElementById('priceModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
+// Единый обработчик для закрытия при клике на фон
 window.onclick = function(event) {
     const pModal = document.getElementById('priceModal');
     const mModal = document.getElementById('modal');
@@ -446,6 +451,7 @@ window.onload = () => setLang(localStorage.getItem('lang') || 'ru');
 </body>
 
 </html>
+
 
 
 
